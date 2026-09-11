@@ -1,7 +1,65 @@
 <div class="container p-5">
-    <div class="banner mb-5 shadow">
-        <img src="imgs/banner.jpeg" alr="Banner IMDB" class="w-100">
+    <?php
+    $sqlBanner = "SELECT * FROM banner
+                  WHERE ativo = 'S'
+                  ORDER BY id DESC";
+
+    $consultaBanner = $pdo->prepare($sqlBanner);
+    $consultaBanner->execute();
+
+    $dadosBanners = $consultaBanner->fetchAll(PDO::FETCH_OBJ);
+?>
+
+<?php if (!empty($dadosBanners)) { ?>
+
+    <div id="carouselBanners"
+         class="carousel slide mb-5 shadow"
+         data-bs-ride="carousel">
+
+        <div class="carousel-inner">
+
+            <?php
+                $primeiro = true;
+
+                foreach ($dadosBanners as $dadosBanner) {
+            ?>
+
+                <div class="carousel-item <?= $primeiro ? 'active' : '' ?>">
+
+                    <img src="arquivos/<?= $dadosBanner->banner ?>"
+                         class="d-block w-100"
+                         alt="<?= $dadosBanner->descricao ?>">
+
+                </div>
+
+            <?php
+                    $primeiro = false;
+                }
+            ?>
+
+        </div>
+
+        <button class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselBanners"
+                data-bs-slide="prev">
+
+            <span class="carousel-control-prev-icon"></span>
+
+        </button>
+
+        <button class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselBanners"
+                data-bs-slide="next">
+
+            <span class="carousel-control-next-icon"></span>
+
+        </button>
+
     </div>
+
+<?php } ?>
 
     <h2>Destaques de Hoje:</h2>
 
